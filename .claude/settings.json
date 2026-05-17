@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions"
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NonInteractive -File \".claude\\hooks\\validate_html.ps1\"",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NonInteractive -File \".claude\\hooks\\check_output.ps1\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

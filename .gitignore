@@ -1,0 +1,5 @@
+# Personal local settings (machine-specific paths/permissions)
+.claude/settings.local.json
+
+# Generated newsletter output (optional: remove this line to track outputs in git)
+output/
