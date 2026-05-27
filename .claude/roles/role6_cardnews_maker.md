@@ -170,7 +170,6 @@ Write `output/cardnews/{MMDD}/post.txt` — Instagram caption for the carousel p
 ——
 
 [마무리 한 줄 — 구독/참여 유도]
-링크 인 바이오 📎
 
 #트렌드레터 #GenZLab #TrendLetter #2026트렌드
 #[카테고리태그1] #[카테고리태그2] #[카테고리태그3] #[카테고리태그4]
