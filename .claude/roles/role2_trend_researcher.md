@@ -28,7 +28,7 @@
 
 ### Category 1 — Korea IT/AI
 ```
-WebSearch "한국 AI 스타트업 최근 2026년 {MONTH}월"
+WebSearch "한국 AI 스타트업 최근 2026년 {MONTH}월 {WEEK}주"
 WebSearch "국내 IT 업계 화제 2026년 {MONTH}월"
 ```
 Required: company name · exact date · investment or KPI metric · service name
@@ -36,30 +36,33 @@ Required: company name · exact date · investment or KPI metric · service name
 ### Category 2 — Korea Marketing/Consumer
 ```
 WebSearch "Z세대 소비 트렌드 2026년 {MONTH}월"
-WebSearch "Gen Z 마케팅 나노커뮤니티 편의점 2026"
+WebSearch "Gen Z 마케팅 트렌드 2026년 {MONTH}월"
 ```
 Required: statistic (%, count, rank) · research source · concrete behavior example
 
 ### Category 3 — Korea Fashion/Beauty
 ```
-WebSearch "여름 패션 트렌드 뷰티 2026년 {MONTH}월"
-WebSearch "K뷰티 신상 화제 아이템 2026년 5월"
+WebSearch "패션 트렌드 뷰티 2026년 {MONTH}월"
+WebSearch "K뷰티 신상 화제 아이템 2026년 {MONTH}월"
 ```
 Required: color or style name · brand or outlet name · trend keyword
 
 ### Category 4 — Global Tech/Culture
 ```
-WebSearch "global AI tech breakthrough announcement May 2026"
-WebSearch "AI technology news company 2026 {MONTH}"
+WebSearch "global AI tech breakthrough announcement {MONTH} {YEAR}"
+WebSearch "AI technology news company {YEAR} {MONTH}"
 ```
 Required: company name · announcement date · numeric metric (users, $, %, parameters)
 
-## Validation Rules (enforce before ROLE_3)
-- Each trend date must be within **14 days** of today — reject if older
+## Validation Rules (enforce strictly before ROLE_3)
+- **Each trend date must be within 7 days of today** — reject anything older than 7 days, no exceptions
+- A story dated more than 7 days ago is ineligible even if it is highly relevant
 - No topic may duplicate a story in `references/` — compare company names + headlines
 - Every trend must have at least one real URL reference
-- Exact date required — "recently" or "this month" alone is not acceptable
+- Exact date required — "recently", "this week", or "this month" alone is not acceptable; verify the precise publish date from the source
 
 ## Retry Policy
-If a category returns no valid story after 2 searches → run 1 additional broader search.  
+If a category returns no valid story within the 7-day window after 2 searches → run 1 additional broader search with explicit date filter (e.g., `after:2026-MM-DD`).  
 Maximum **3 total attempts** per category before skipping and documenting the gap.
+
+**Do not relax the 7-day rule under any circumstances.** If no story can be found within 7 days for a category, document it as "이번 주 해당 카테고리 신규 트렌드 없음" and proceed with the remaining categories.

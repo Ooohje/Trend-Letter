@@ -1,6 +1,6 @@
 # ROLE_5 · PUBLISHER
 
-**Purpose:** Write the completed HTML file to disk and notify the user via Telegram.
+**Purpose:** Write the completed newsletter HTML file to disk. ROLE_6 handles the Telegram completion message.
 
 **Inputs:** Complete HTML string from ROLE_4
 
@@ -10,23 +10,7 @@
    - `{MMDD}` = zero-padded month+day from today's date (e.g., `0517` for May 17)
    - Overwrite silently if file already exists — do not prompt
 
-2. **Send Telegram reply** in this exact format:
-```
-✅ 트렌드 레터 Vol.NN 완성됐어요!
-
-📁 output/trend_letter_{MMDD}.html
-
-📌 이번 호 4가지 트렌드:
-1. [이모지] [trend title 1]
-2. [이모지] [trend title 2]
-3. [이모지] [trend title 3]
-4. [이모지] [trend title 4]
-
-🖼 이미지 소스: [domain1] + [domain2] + [domain3]
-```
-
-3. **Attach the HTML file** to the same Telegram reply using the `files` parameter of the reply tool
+2. **Confirm success** internally — pass `{MMDD}` and `{VOL}` to ROLE_6
 
 ## Failure Handling
-- File write failure → send Telegram error message with attempted path and error details
-- Telegram send failure → output the file path to console; do not retry indefinitely
+- File write failure → send Telegram error message with attempted path and error details, then stop

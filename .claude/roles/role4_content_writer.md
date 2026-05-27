@@ -86,7 +86,16 @@
 
 ## Pre-ROLE_5 Self-Check (run through every item before passing HTML to ROLE_5)
 
-- [ ] 4 trends · each with exact date within 14 days of today
+## Inline Stat Linking (mandatory)
+When a specific statistic appears in body text and its source URL is known from ROLE_2 references, wrap the number with an anchor:
+```html
+<a href="[source_url]" target="_blank" style="color:inherit;text-decoration:underline;">34.1%</a>
+```
+Apply to: percentages, counts, rankings, named metrics — any figure traceable to a specific article URL.
+
+## Pre-ROLE_5 Self-Check (run through every item before passing HTML to ROLE_5)
+
+- [ ] 4 trends · each with exact date within 7 days of today
 - [ ] 4 `.trend-card` blocks · each with verified CDN background + gradient overlay
 - [ ] Each card: `.card-meta` + `.card-badge` + `.card-headline` + `.card-tags` (4 hashtags)
 - [ ] Each trend: `inline_1` img + `inline_2` img · both from ROLE_3 verified list

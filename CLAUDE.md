@@ -6,7 +6,7 @@ Five roles execute in strict sequence. Each role spec lives in `.claude/roles/`.
 
 **Global constraints (apply to every role):**
 - **Never pause mid-task to ask the user for confirmation.** Execute fully autonomously.
-- **Telegram messages: exactly 2 per run** — start notification + completion with file attached. No in-between messages.
+- **Telegram messages: exactly 2 per run** — start notification + completion (with HTML + 6 PNG files). No in-between messages.
 - All HTML visible content must be in Korean.
 - Read today's date from the `currentDate` value in the system context.
 - `bypassPermissions` is active — all tool calls are pre-authorized.
@@ -20,7 +20,7 @@ Five roles execute in strict sequence. Each role spec lives in `.claude/roles/`.
 
 **On trigger — do exactly this:**
 1. Send Telegram reply: `"트렌드 레터 제작 시작할게요! 완료되면 파일로 보내드릴게요 🙌"`
-2. Execute roles in strict order: ROLE_1 → ROLE_2 → ROLE_3 → ROLE_4 → ROLE_5
+2. Execute roles in strict order: ROLE_1 → ROLE_2 → ROLE_3 → ROLE_4 → ROLE_5 → ROLE_6
 3. On any unrecoverable failure: send one Telegram reply naming the failed role and the error
 
 ---
@@ -37,6 +37,8 @@ Five roles execute in strict sequence. Each role spec lives in `.claude/roles/`.
 
 @.claude/roles/role5_publisher.md
 
+@.claude/roles/role6_cardnews_maker.md
+
 ---
 
 ## GLOBAL PROHIBITIONS
@@ -44,7 +46,7 @@ Five roles execute in strict sequence. Each role spec lives in `.claude/roles/`.
 ❌ NO markdown code fences (` ```html `) in HTML output  
 ❌ NO meta-commentary in output (`"위 내용을 바탕으로..."` etc.)  
 ❌ NO CSS deviation from ROLE_1 extraction  
-❌ NO trend data older than 14 days  
+❌ NO trend data older than 7 days  
 ❌ NO unverified image URLs (every URL must return HTTP 200)  
 ❌ NO images from fewer than 3 distinct domains  
 ❌ NO placeholder `<div>` substituting for images — real `<img>` tags only  
