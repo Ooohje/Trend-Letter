@@ -12,6 +12,7 @@ Usage: python make_cardnews_images.py path/to/trendsnap_{MMDD}.html
   - 사후(Pillow 설치 시):
       · 배경 밝기 체크 (배경 미로드 감지, 임베드 실패 보험)
       · 하단 잘림 체크 (텍스트 overflow 감지)
+      · 내부 overflow 체크 (overflow:hidden 해제 후 콘텐츠 튀어나옴 감지)
 """
 import base64
 import re
@@ -21,6 +22,8 @@ import urllib.request
 from pathlib import Path
 
 CHROME = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
+
+CARD_HEIGHT = 1350   # 4:5 비율 (1080×1350)
 
 PHOTO_CARDS = {"c1", "c2", "c3", "c4"}   # 배경 사진이 있어야 하는 카드
 
@@ -85,9 +88,70 @@ def make_single_card_html(embedded_html: str, card_id: str) -> str:
     return embedded_html.replace("</head>", override + "\n</head>")
 
 
+def make_overflow_check_html(embedded_html: str, card_id: str) -> str:
+    """overflow:hidden 해제 버전 — 내부 콘텐츠가 카드 밖으로 튀어나오는지 확인용."""
+    override = f"""
+<style id="__ss">
+  body {{ padding: 0 !important; background: #0e0e0e !important; overflow: hidden !important; }}
+  .guide {{ display: none !important; }}
+  .card {{ display: none !important; margin: 0 !important; }}
+  #{card_id} {{ display: flex !important; margin: 0 !important; overflow: visible !important; height: auto !important; min-height: {CARD_HEIGHT}px !important; }}
+</style>"""
+    return embedded_html.replace("</head>", override + "\n</head>")
+
+
 # ── 사후 검증 (Pillow) ───────────────────────────────────────────────────────
 
-def _pillow_checks(out: Path, cid: str, tmp: Path) -> list[str]:
+def _check_internal_overflow(embedded_html: str, card_id: str, tmp_dir: Path) -> list[str]:
+    """
+    overflow:hidden 을 해제하고 더 큰 뷰포트로 스크린샷한 뒤,
+    CARD_HEIGHT 아래쪽에 콘텐츠가 있으면 내부 overflow 경고를 반환.
+    """
+    try:
+        from PIL import Image
+    except ImportError:
+        return []
+
+    warnings = []
+    chk_html = tmp_dir / f"_ovf_int_{card_id}.html"
+    chk_png  = tmp_dir / f"_ovf_int_{card_id}.png"
+
+    chk_html.write_text(make_overflow_check_html(embedded_html, card_id), encoding="utf-8")
+    file_url = "file:///" + str(chk_html).replace("\\", "/").replace(" ", "%20")
+
+    check_height = CARD_HEIGHT + 400
+    subprocess.run(
+        [CHROME, "--headless=new", "--disable-gpu", "--no-sandbox",
+         "--disable-extensions", "--force-device-scale-factor=1",
+         "--hide-scrollbars", "--run-all-compositor-stages-before-draw",
+         f"--window-size=1080,{check_height}", f"--screenshot={chk_png}", file_url],
+        capture_output=True, timeout=30,
+    )
+
+    chk_html.unlink(missing_ok=True)
+
+    if chk_png.exists():
+        try:
+            img = Image.open(chk_png)
+            # CARD_HEIGHT ~ CARD_HEIGHT+200 구간에 콘텐츠가 있으면 내부 overflow
+            strip_top = CARD_HEIGHT
+            strip_bot = min(img.height, CARD_HEIGHT + 200)
+            if strip_bot > strip_top:
+                strip = img.crop((0, strip_top, 1080, strip_bot))
+                pixels = list(strip.getdata())
+                non_bg = sum(1 for p in pixels if max(p[:3]) > 40)
+                ratio = non_bg / max(len(pixels), 1)
+                if non_bg > 500 and ratio > 0.01:
+                    warnings.append(f"내부 콘텐츠 overflow 감지 ({non_bg}px, {ratio:.1%}) — JSON 값 단축 필요")
+        except Exception:
+            pass
+        finally:
+            chk_png.unlink(missing_ok=True)
+
+    return warnings
+
+
+def _pillow_checks(out: Path, cid: str, tmp: Path, embedded_html: str) -> list[str]:
     try:
         from PIL import Image
     except ImportError:
@@ -106,20 +170,21 @@ def _pillow_checks(out: Path, cid: str, tmp: Path) -> list[str]:
                 f"배경 이미지 미로드 의심 (상단 평균 밝기 {avg_brightness:.0f}/255)"
             )
 
-    # 2) overflow 감지 — 1080×1120 스크린샷, 하단 40px 확인
+    # 2) 외부 overflow 감지 — CARD_HEIGHT+40px 스크린샷, 하단 40px 확인
     chk = tmp.parent / f"_ovf_{cid}.png"
     file_url = "file:///" + str(tmp).replace("\\", "/").replace(" ", "%20")
+    chk_height = CARD_HEIGHT + 40
     subprocess.run(
         [CHROME, "--headless=new", "--disable-gpu", "--no-sandbox",
          "--disable-extensions", "--force-device-scale-factor=1",
          "--hide-scrollbars", "--run-all-compositor-stages-before-draw",
-         "--window-size=1080,1120", f"--screenshot={chk}", file_url],
+         f"--window-size=1080,{chk_height}", f"--screenshot={chk}", file_url],
         capture_output=True, timeout=30,
     )
     if chk.exists():
         try:
             chk_img = Image.open(chk)
-            strip = chk_img.crop((0, 1080, 1080, min(chk_img.height, 1120)))
+            strip = chk_img.crop((0, CARD_HEIGHT, 1080, min(chk_img.height, chk_height)))
             non_bg = sum(1 for p in strip.getdata() if max(p[:3]) > 40)
             if non_bg > 300:
                 warnings.append(f"텍스트 잘림 의심 (하단 {non_bg}px 초과)")
@@ -127,6 +192,9 @@ def _pillow_checks(out: Path, cid: str, tmp: Path) -> list[str]:
             pass
         finally:
             chk.unlink(missing_ok=True)
+
+    # 3) 내부 overflow 감지 (overflow:hidden 해제 후 확인)
+    warnings += _check_internal_overflow(embedded_html, cid, tmp.parent)
 
     return warnings
 
@@ -143,7 +211,7 @@ def generate(html_file: str) -> None:
     source = html_path.read_text(encoding="utf-8")
     mmdd = html_path.stem.replace("trendsnap_", "")
 
-    print(f"\n▶ Trend Snap {mmdd} 카드뉴스 이미지 생성\n")
+    print(f"\n▶ Trend Snap {mmdd} 카드뉴스 이미지 생성 (1080×{CARD_HEIGHT})\n")
 
     # ── 배경 이미지 임베드 ────────────────────────────────────────────────────
     bg_urls = list(dict.fromkeys(
@@ -174,13 +242,13 @@ def generate(html_file: str) -> None:
             [CHROME, "--headless=new", "--disable-gpu", "--no-sandbox",
              "--disable-extensions", "--force-device-scale-factor=1",
              "--hide-scrollbars", "--run-all-compositor-stages-before-draw",
-             "--window-size=1080,1080", f"--screenshot={out}", file_url],
+             f"--window-size=1080,{CARD_HEIGHT}", f"--screenshot={out}", file_url],
             capture_output=True, timeout=30,
         )
 
         if out.exists() and out.stat().st_size > 10_000:
             kb = out.stat().st_size // 1024
-            warns = _pillow_checks(out, cid, tmp)
+            warns = _pillow_checks(out, cid, tmp, source)
             tmp.unlink(missing_ok=True)
 
             if warns:
