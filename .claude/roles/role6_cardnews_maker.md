@@ -11,7 +11,7 @@
 
 **Outputs:**
 - A Canva design (copy of the master) populated for this week → **edit link**
-- `output/cardnews/{MMDD}/post.txt` (also copied to `output/post_{MMDD}.txt`)
+- `output/post_{MMDD}.txt` (Instagram caption)
 - One Telegram completion message
 
 ---
@@ -81,12 +81,12 @@ Use these operation types only (Canva cannot create new elements):
 
 ## Step 5 — Verify readability (mandatory, mid-transaction)
 
-`get-design-thumbnail` for **every** page (1–6). Check:
+`get-design-thumbnail` for content pages **2–5 only** (cover/summary are text-only and unchanged in layout; `start-editing-transaction` already returns the cover thumbnail). Check:
 - No text clipped or overflowing the card.
 - Dark text is clearly legible over the photo (no washout, no dark-on-dark).
 - Reference block fits in the lower area and looks balanced.
 
-If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-check that page. **Do not commit until all 6 pages pass.**
+If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-fetch **only that page**. Don't commit until pages 2–5 pass.
 
 ## Step 6 — Commit
 
@@ -96,7 +96,7 @@ If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at low
 
 ## Step 7 — Write the Instagram caption
 
-Write `output/cardnews/{MMDD}/post.txt` **and** `output/post_{MMDD}.txt` (identical content).
+Write `output/post_{MMDD}.txt`.
 
 ### Format
 ```

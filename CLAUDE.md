@@ -1,7 +1,7 @@
 # Trend Letter Bot — Orchestrator
 
 ## System Overview
-Auto-generates, from a single Telegram trigger, two deliverables:
+Auto-generates, from a single Telegram trigger, three deliverables:
 1. **HTML newsletter** → `output/trend_letter_{MMDD}.html`
 2. **"Trend News" card news IN CANVA** (6 pages) → a shareable Canva edit link
 3. **Instagram post caption** → `output/post_{MMDD}.txt`
@@ -19,6 +19,13 @@ The card news is built **natively in Canva** (ROLE_6) — there is **NO HTML→P
 - Read today's date from the `currentDate` value in the system context.
 - `bypassPermissions` is active — all tool calls are pre-authorized.
 - Run independent operations (searches, image fetches, curl checks) **in parallel** wherever possible.
+
+**Token budget (keep each run cheap):**
+- Batch independent tool calls into one message (parallel); never serialize what can run together.
+- Don't re-read a file already in context; don't echo full HTML, JSON, or Canva element dumps back into the reply — summarize.
+- ROLE_2: stop searching a category as soon as one valid in-window story is found (don't run all queries if early ones succeed).
+- ROLE_3: ≤3 candidate URLs per slot; batch the `curl` 200-checks in a single command.
+- ROLE_6: apply ALL Canva text/fill edits in ONE `perform-editing-operations` call; fetch thumbnails for content pages **2–5 only** (cover/summary are text-only), and re-fetch a page only after fixing it.
 
 ---
 

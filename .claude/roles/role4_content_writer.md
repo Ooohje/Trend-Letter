@@ -84,8 +84,6 @@
 - Closing paragraph: must end with a question form  
   (예: `여러분은 ○○ 어떻게 느껴지시나요?`)
 
-## Pre-ROLE_5 Self-Check (run through every item before passing HTML to ROLE_5)
-
 ## Inline Stat Linking (mandatory)
 When a specific statistic appears in body text and its source URL is known from ROLE_2 references, wrap the number with an anchor:
 ```html
