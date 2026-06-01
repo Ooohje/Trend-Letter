@@ -31,19 +31,19 @@ Always **copy** this master — never edit the master itself. The copy inherits 
 | 3 | Trend #2 | kicker `#2 · {CATEGORY}` · title · body+references · photo background |
 | 4 | Trend #3 | kicker `#3 · {CATEGORY}` · title · body+references · photo background |
 | 5 | Trend #4 | kicker `#4 · {CATEGORY}` · title · body+references · photo background |
-| 6 | Summary | `SUMMARY · 이번 주의 문법` · 3-line keyword headline · 2-line recap · `다음 주에 또 만나요 👋` |
+| 6 | Summary | kicker `SUMMARY` · single-line keyword headline `이번 주의 키워드` · 2-line recap · button `다음 주에 또 만나요 👋` |
 
 ### Reference block format (bottom of pages 2–5, inside the body text element)
 Append to the body text, after the 3 content lines:
 ```
 {3 body lines}
 
-──────────────
+─────────────────────
 참고 ·  {매체} 「{기사 제목}」 {YYYY.MM.DD}
 ·  {매체2} 「{기사 제목2}」 {YYYY.MM.DD}
 ```
 - Use 1–2 sources per page from ROLE_2 references.
-- `──────────────` is a literal divider line (14 box-drawing chars).
+- `─────────────────────` is a literal divider line (21 box-drawing chars).
 - Keep outlet/article names as published (English allowed for foreign outlets).
 
 ---
@@ -164,7 +164,7 @@ files: [
 - Page 2–5 title: ≤ 12 Korean chars
 - Page 2–5 body: 3 lines, each ≤ 30 Korean chars
 - Reference block: ≤ 2 sources, each line ≤ 40 chars
-- Summary headline: 3 lines, each ≤ 8 chars
+- Summary headline: single line `이번 주의 키워드` (≤ 10 Korean chars)
 
 ## Failure Handling
 - `copy-design` / `upload-asset-from-url` failure → retry once, then send Telegram error naming the step.
