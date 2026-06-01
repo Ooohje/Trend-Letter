@@ -19,8 +19,8 @@
 <body>
 <div class="outer">
 
-  [1]  .meta                  "Trend Letter #NN"
-  [2]  cover div              dark background · Vol.NN · Korean date range
+  [1]  .meta                  "Trend Letter · {YYYY.MM.DD}"  (date, NOT a Vol number)
+  [2]  cover div              dark background · {YYYY.MM.DD} · Korean date range
   [3]  .credits               date range notice (Korean)
   [4]  .divider-space
   [5]  .block.top             2–3 intro paragraphs (seasonal + timely, Korean)
@@ -51,7 +51,7 @@
   [10] editor image placeholder
   [11] previous-issue link
   [12] .cta-wrap              feedback CTA button
-  [13] .footer × 3           disclaimer · browser notice · Vol.NN / date
+  [13] .footer × 3           disclaimer · browser notice · {YYYY.MM.DD}  (date, no Vol)
 
 </div>
 </body>

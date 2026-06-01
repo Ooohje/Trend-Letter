@@ -1,153 +1,100 @@
-# ROLE_6 · CARDNEWS_MAKER
+# ROLE_6 · CARDNEWS_MAKER (Canva-native)
 
-**Purpose:** Generate Trend Snap card news (6 PNG images + post.txt) from this week's trend data and send the Telegram completion message.
+**Purpose:** Build the **"Trend News"** 6-page card news **inside Canva** by copying the approved master design and replacing its content, then write the Instagram caption and send the single Telegram completion message.
 
-**Inputs:** Trend records from ROLE_2 memory · verified image URLs from ROLE_3 memory · `{MMDD}` and `{VOL}` from today's date  
-**Outputs:** `output/cardnews/{MMDD}/trendsnap_{MMDD}.html` + 6 PNG files + `post.txt` + Telegram message
+**There is NO HTML→PNG pipeline.** Do not run Python, Edge headless, or screenshot scripts. The card news lives entirely in Canva and is delivered as an edit link.
+
+**Inputs:**
+- Trend records from ROLE_2 (4 trends: category, headline, 3 body lines, references)
+- Verified card-background image URLs from ROLE_3 (one per trend)
+- `{MMDD}` and today's date `{YYYY.MM.DD}` from `currentDate`
+
+**Outputs:**
+- A Canva design (copy of the master) populated for this week → **edit link**
+- `output/cardnews/{MMDD}/post.txt` (also copied to `output/post_{MMDD}.txt`)
+- One Telegram completion message
 
 ---
 
-## Step 1 — Construct JSON Data File
+## MASTER TEMPLATE (the approved look)
 
-Write `output/cardnews/{MMDD}/trendsnap_data.json` using ROLE_2 and ROLE_3 outputs.
+**Master design ID:** `DAHLSiSl5MA` (title wordmark "Trend News", dark editorial grid, blue accents).
+Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, and the reference-block styling the user finalized.
 
-### JSON Schema
-```json
-{
-  "vol": "NN",
-  "date_full": "YYYY.MM.DD",
-  "mmdd": "MMDD",
-  "trends": [
-    {
-      "index": 1,
-      "category": "IT · AI · Korea · YYYY.MM",
-      "lbl_class": "lbl-ai",
-      "dot_class": "dot-ai",
-      "bg_url": "ROLE_3 card image URL for trend 1",
-      "hl1": "헤드라인 첫 번째 줄",
-      "hl2": "헤드라인 두 번째 줄",
-      "subline": "부제목 / 출처",
-      "p1": "bullet 1 (HTML <strong> allowed)",
-      "p2": "bullet 2 (HTML <strong> allowed)",
-      "p3": "bullet 3 (HTML <strong> allowed)",
-      "pull": "pull quote text",
-      "tags": "#태그1 &nbsp; #태그2 &nbsp; #태그3 &nbsp; #태그4",
-      "cover_cat": "IT · AI",
-      "cover_title": "커버에 표시할 짧은 제목 (≤20자)"
-    },
-    {
-      "index": 2,
-      "category": "Marketing · Consumer · YYYY.MM",
-      "lbl_class": "lbl-nano",
-      "dot_class": "dot-nano",
-      "bg_url": "ROLE_3 card image URL for trend 2",
-      "hl1": "헤드라인 첫 번째 줄",
-      "hl2": "헤드라인 두 번째 줄",
-      "big_stat": "34.1%",
-      "stat_unit": "Z세대 관련 통계 설명",
-      "stat_source": "출처 · [리서치명], YYYY.MM",
-      "pill1": "키워드1",
-      "pill2": "키워드2",
-      "pill3": "키워드3",
-      "note": "한 줄 요약 (HTML <strong> allowed, <br> for line break)",
-      "tags": "#태그1 &nbsp; #태그2 &nbsp; #태그3 &nbsp; #태그4",
-      "cover_cat": "Marketing",
-      "cover_title": "커버에 표시할 짧은 제목"
-    },
-    {
-      "index": 3,
-      "category": "Fashion · Beauty · YYYY S/S",
-      "lbl_class": "lbl-style",
-      "dot_class": "dot-style",
-      "bg_url": "ROLE_3 card image URL for trend 3",
-      "hl1": "헤드라인 첫 번째 줄",
-      "hl2": "헤드라인 두 번째 줄",
-      "color1": "RED",
-      "color2": "BLUE",
-      "color3": "GREEN",
-      "color4": "YELLOW",
-      "p1": "스타일 포인트 1 (HTML <strong> allowed)",
-      "p2": "스타일 포인트 2",
-      "p3": "스타일 포인트 3",
-      "tags": "#태그1 &nbsp; #태그2 &nbsp; #태그3 &nbsp; #태그4",
-      "cover_cat": "Fashion · Beauty",
-      "cover_title": "커버에 표시할 짧은 제목"
-    },
-    {
-      "index": 4,
-      "category": "Global Tech · YYYY.MM.DD",
-      "lbl_class": "lbl-tech",
-      "dot_class": "dot-tech",
-      "bg_url": "ROLE_3 card image URL for trend 4",
-      "hl1": "헤드라인 첫 번째 줄",
-      "hl2": "헤드라인 두 번째 줄",
-      "big_num": "180",
-      "num_unit": "QUBIT",
-      "stat_source": "출처 · [매체명], YYYY.MM.DD",
-      "stat1": "stat 1 (HTML <strong> allowed)",
-      "stat2": "stat 2",
-      "stat3": "stat 3",
-      "tags": "#태그1 &nbsp; #태그2 &nbsp; #태그3 &nbsp; #태그4",
-      "cover_cat": "Global Tech",
-      "cover_title": "커버에 표시할 짧은 제목"
-    }
-  ],
-  "poem_lines": [
-    "트렌드1 핵심 한 줄,",
-    "트렌드2 핵심 한 줄,",
-    "트렌드3 핵심 한 줄,",
-    "트렌드4 핵심 한 줄."
-  ],
-  "poem_l5": "이번 주의 문법을 요약하는 짧은 문장",
-  "closing_note": "다음 Trend Snap도 함께해요 👋"
-}
+### Page map (6 pages, 720×900)
+| Page | Role | Key elements |
+|---|---|---|
+| 1 | Cover | kicker `WEEKLY TREND BRIEF · {YYYY.MM.DD}` · wordmark `Trend News` · 3-line headline · subtext · `밀어서 보기 →` · dark grid + logo |
+| 2 | Trend #1 | kicker `#1 · {CATEGORY}` · title · body(3 lines)+reference block · photo background |
+| 3 | Trend #2 | kicker `#2 · {CATEGORY}` · title · body+references · photo background |
+| 4 | Trend #3 | kicker `#3 · {CATEGORY}` · title · body+references · photo background |
+| 5 | Trend #4 | kicker `#4 · {CATEGORY}` · title · body+references · photo background |
+| 6 | Summary | `SUMMARY · 이번 주의 문법` · 3-line keyword headline · 2-line recap · `다음 주에 또 만나요 👋` |
+
+### Reference block format (bottom of pages 2–5, inside the body text element)
+Append to the body text, after the 3 content lines:
 ```
+{3 body lines}
 
-### Field Rules
-- `hl1` + `hl2`: split headline at natural break, each ≤ 16 Korean characters
-- `cover_title`: same as `hl1 + hl2` joined, ≤ 22 Korean characters total
-- `big_stat` (T2): include % or ₩ symbol in the value string
-- `stat_source` (T2, T4): `"출처 · [리서치/매체명], YYYY.MM"` — required when the stat has a verifiable source
-- `color1–4` (T3): actual trend color names — can be Korean or English (e.g., "RED", "버건디")
-- `big_num` (T4): numeric only, no unit (unit goes in `num_unit`)
-- `tags`: use `&nbsp;` as separator, include the `#` prefix in each tag
-- HTML in `p1/p2/p3`, `note`, `stat1/2/3`: only `<strong>` and `<br>` are allowed
-
----
-
-## Step 2 — Generate HTML
-
-```bash
-python references/generate_trendsnap.py output/cardnews/{MMDD}/trendsnap_data.json
+──────────────
+참고 ·  {매체} 「{기사 제목}」 {YYYY.MM.DD}
+·  {매체2} 「{기사 제목2}」 {YYYY.MM.DD}
 ```
-
-This writes `output/cardnews/{MMDD}/trendsnap_{MMDD}.html`.
-
----
-
-## Step 3 — Generate PNG Images
-
-```bash
-python references/make_cardnews_images.py output/cardnews/{MMDD}/trendsnap_{MMDD}.html
-```
-
-The script:
-1. Downloads all background image URLs and embeds as base64 data URIs (guarantees Chrome renders them without network)
-2. Screenshots each card at 1080×1080 via Chrome Headless
-3. Runs Pillow validation: background brightness check + overflow check
-
-Output files in `output/cardnews/{MMDD}/`:
-- `01_cover.png`, `02_ai.png`, `03_marketing.png`, `04_fashion.png`, `05_tech.png`, `06_outro.png`
-
-### On ⚠️ warnings
-- `배경 이미지 미로드` → the bg_url could not be downloaded. Replace the URL in the JSON and re-run Step 2+3.
-- `텍스트 잘림 의심` → shorten the flagged field values in the JSON and re-run Step 2+3.
+- Use 1–2 sources per page from ROLE_2 references.
+- `──────────────` is a literal divider line (14 box-drawing chars).
+- Keep outlet/article names as published (English allowed for foreign outlets).
 
 ---
 
-## Step 4 — Generate post.txt
+## Step 1 — Copy the master
 
-Write `output/cardnews/{MMDD}/post.txt` — Instagram caption for the carousel post.
+`copy-design` with `design_id: DAHLSiSl5MA`, title `Trend News · {YYYY.MM.DD}`.
+Record the new `design_id` and its edit URL.
+
+## Step 2 — Upload this week's 4 background photos
+
+For each trend's ROLE_3 card image URL, call `upload-asset-from-url` → record the 4 returned `asset_id`s.
+(These replace the previous week's backgrounds on pages 2–5.)
+
+## Step 3 — Open an editing transaction
+
+`start-editing-transaction` on the new copy's `design_id`.
+The response returns **all `richtexts` and `fills` with their current element IDs**. Element IDs are unique per design copy, so **map them by current text / page**, not by memorized IDs:
+- Cover: kicker (`WEEKLY TREND BRIEF · …`), wordmark (`Trend News`), headline, subtext.
+- Pages 2–5: kicker (`#N · …`), title, body, and the full-page photo `fill` element.
+- Page 6: summary kicker, headline, recap, button.
+
+## Step 4 — Replace all content (batch into one `perform-editing-operations` call where possible)
+
+Use these operation types only (Canva cannot create new elements):
+- `replace_text` — cover date+headline, each page's kicker/title/body(+reference block), summary text.
+- `update_fill` — swap each page 2–5 background photo element to this week's uploaded `asset_id`.
+- `format_text` — only if a contrast fix is needed (see Step 5).
+
+**Text color rule (verified readable):**
+- Content pages (2–5) use a **light page base + photo texture + DARK text**: title `#11121A`, body `#1E2230`, kicker `#2E6FB0`.
+- Cover + summary sit on the **dark grid**, so their text stays **light** (white / blue) — leave as-is from the master.
+
+**Background opacity rule:** photos sit at ~`0.26–0.42` opacity over the light base so dark text stays legible. If a swapped photo is dark/busy, lower its opacity toward `0.26`.
+
+## Step 5 — Verify readability (mandatory, mid-transaction)
+
+`get-design-thumbnail` for **every** page (1–6). Check:
+- No text clipped or overflowing the card.
+- Dark text is clearly legible over the photo (no washout, no dark-on-dark).
+- Reference block fits in the lower area and looks balanced.
+
+If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-check that page. **Do not commit until all 6 pages pass.**
+
+## Step 6 — Commit
+
+`commit-editing-transaction` on the transaction. Autonomously — do **not** ask the user first (global constraint). Record the final edit link from `get-design`.
+
+---
+
+## Step 7 — Write the Instagram caption
+
+Write `output/cardnews/{MMDD}/post.txt` **and** `output/post_{MMDD}.txt` (identical content).
 
 ### Format
 ```
@@ -171,26 +118,25 @@ Write `output/cardnews/{MMDD}/post.txt` — Instagram caption for the carousel p
 
 [마무리 한 줄 — 구독/참여 유도]
 
-#트렌드레터 #GenZLab #TrendLetter #2026트렌드
+#트렌드레터 #GenZLab #TrendNews #2026트렌드
 #[카테고리태그1] #[카테고리태그2] #[카테고리태그3] #[카테고리태그4]
 ```
 
 ### Tone rules
-- 사람이 직접 쓴 것처럼 자연스럽게
-- 각 트렌드 2–3문장, 짧고 임팩트 있게
-- 해시태그는 8–10개, 마지막 줄에 모아서
+- 사람이 직접 쓴 것처럼 자연스럽게, 각 트렌드 2–3문장
+- 해시태그 8–10개, 마지막 줄에 모아서
 
 ---
 
-## Step 5 — Send Telegram Completion Message
+## Step 8 — Send the single Telegram completion message
 
-Send **one** Telegram reply with all 8 files attached using the `files` array.
+Send **one** Telegram reply. Attach the 2 files (`files` array) and put the Canva link in the message body.
 
-Message format:
 ```
-✅ 트렌드 레터 Vol.NN + Trend Snap 완성됐어요!
+✅ 이번 주 트렌드 레터 완성됐어요! ({YYYY.MM.DD})
 
-📁 HTML 뉴스레터 + 카드뉴스 6장 + 인스타 캡션 첨부했어요.
+📄 HTML 뉴스레터 + 📝 인스타 캡션 첨부했어요.
+🎨 Trend News 카드뉴스(캔바): {canva_edit_link}
 
 📌 이번 호 4가지 트렌드:
 1. [이모지] [trend title 1]
@@ -201,28 +147,23 @@ Message format:
 🖼 이미지 소스: [domain1] + [domain2] + [domain3]
 ```
 
-Attach all 8 files using their full absolute paths:
+Attach (absolute paths, confirm both exist on disk first):
 ```
 files: [
   "output/trend_letter_{MMDD}.html",
-  "output/cardnews/{MMDD}/01_cover.png",
-  "output/cardnews/{MMDD}/02_ai.png",
-  "output/cardnews/{MMDD}/03_marketing.png",
-  "output/cardnews/{MMDD}/04_fashion.png",
-  "output/cardnews/{MMDD}/05_tech.png",
-  "output/cardnews/{MMDD}/06_outro.png",
-  "output/cardnews/{MMDD}/post.txt"
+  "output/post_{MMDD}.txt"
 ]
 ```
 
-**Important:** Use absolute file paths resolved from the project working directory. All 8 files must be confirmed to exist on disk before calling reply.
+---
 
-## Content Limits (to prevent card overflow)
-- `hl1` + `hl2` combined: ≤ 30 Korean characters
-- `subline`: ≤ 25 characters
-- `p1/p2/p3` each: ≤ 35 characters (including HTML tags)
-- `pull`: ≤ 45 characters
-- `stat_unit` (T2): ≤ 22 characters
-- `stat_source` (T2, T4): ≤ 25 characters
-- `note` (T2): ≤ 50 characters
-- `stat1/2/3` (T4): ≤ 38 characters each
+## Content Limits (prevent card overflow)
+- Cover headline: 3 short lines, each ≤ 8 Korean chars
+- Page 2–5 title: ≤ 12 Korean chars
+- Page 2–5 body: 3 lines, each ≤ 30 Korean chars
+- Reference block: ≤ 2 sources, each line ≤ 40 chars
+- Summary headline: 3 lines, each ≤ 8 chars
+
+## Failure Handling
+- `copy-design` / `upload-asset-from-url` failure → retry once, then send Telegram error naming the step.
+- Uncommitted transaction must never be left open — either commit (on success) or `cancel-editing-transaction` (on abort).
