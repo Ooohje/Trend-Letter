@@ -18,8 +18,9 @@
 
 ## MASTER TEMPLATE (the approved look)
 
-**Master design ID:** `DAHLSzY4WsQ` (Instagram portrait **1080×1350**, title wordmark "Trend News", dark editorial grid, blue accents, genZ lab logo top-right on every page).
-Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, and the reference-block styling the user finalized.
+**Master design ID:** `DAHLTLAKV50` (title "Trend News Reference", Instagram portrait **1080×1350**, 6 pages, title wordmark "Trend News", dark editorial grid, blue accents, genZ lab logo top-right on every page).
+This is the user's **public reference copy** (public link `https://canva.link/tqqnb3s6ekfqfap`) — the finalized look the weekly output must match. Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, and the reference-block styling the user finalized.
+(Previous master `DAHLSzY4WsQ` is superseded by this reference copy.)
 
 > Logo note: the genZ lab logo (asset `MAHLR2vMuLE`) is a **raster image** top-right on all 6 pages. The editing API exposes **no background-removal, filter/effect, or recolor/tint** operations for images — only replace (`update_fill`), move, resize, delete. So per-page logo recoloring (e.g. background-remove → color filter to match each page) is a **Canva-UI-only manual step**; the bot **leaves the logo untouched**. To enable programmatic per-page swaps instead, provide pre-colored logo asset IDs and the bot can `update_fill` each page.
 
@@ -50,7 +51,7 @@ Append to the body text, after the 3 content lines:
 
 ## Step 1 — Copy the master
 
-`copy-design` with `design_id: DAHLSzY4WsQ`, title `Trend News · {YYYY.MM.DD}`.
+`copy-design` with `design_id: DAHLTLAKV50`, title `Trend News · {YYYY.MM.DD}`.
 Record the new `design_id` and its edit URL.
 
 ## Step 2 — Upload this week's 4 background photos
