@@ -21,7 +21,7 @@
 **Master design ID:** `DAHLSzY4WsQ` (Instagram portrait **1080×1350**, title wordmark "Trend News", dark editorial grid, blue accents, genZ lab logo top-right on every page).
 Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, and the reference-block styling the user finalized.
 
-> Logo note: the genZ lab logo (asset `MAHLR2vMuLE`) is a **raster image** placed top-right on all 6 pages. Canva's editing API has **no recolor/tint operation** for images, so its color cannot be changed per page programmatically — only swapped via `update_fill` if a pre-colored logo asset exists. Leave the logo as-is unless a colored variant asset is provided.
+> Logo note: the genZ lab logo (asset `MAHLR2vMuLE`) is a **raster image** top-right on all 6 pages. The editing API exposes **no background-removal, filter/effect, or recolor/tint** operations for images — only replace (`update_fill`), move, resize, delete. So per-page logo recoloring (e.g. background-remove → color filter to match each page) is a **Canva-UI-only manual step**; the bot **leaves the logo untouched**. To enable programmatic per-page swaps instead, provide pre-colored logo asset IDs and the bot can `update_fill` each page.
 
 ### Page map (6 pages, 1080×1350)
 | Page | Role | Key elements |
