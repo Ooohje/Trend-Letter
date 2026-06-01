@@ -18,10 +18,12 @@
 
 ## MASTER TEMPLATE (the approved look)
 
-**Master design ID:** `DAHLSiSl5MA` (title wordmark "Trend News", dark editorial grid, blue accents).
+**Master design ID:** `DAHLSzY4WsQ` (Instagram portrait **1080×1350**, title wordmark "Trend News", dark editorial grid, blue accents, genZ lab logo top-right on every page).
 Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, and the reference-block styling the user finalized.
 
-### Page map (6 pages, 720×900)
+> Logo note: the genZ lab logo (asset `MAHLR2vMuLE`) is a **raster image** placed top-right on all 6 pages. Canva's editing API has **no recolor/tint operation** for images, so its color cannot be changed per page programmatically — only swapped via `update_fill` if a pre-colored logo asset exists. Leave the logo as-is unless a colored variant asset is provided.
+
+### Page map (6 pages, 1080×1350)
 | Page | Role | Key elements |
 |---|---|---|
 | 1 | Cover | kicker `WEEKLY TREND BRIEF · {YYYY.MM.DD}` · wordmark `Trend News` · 3-line headline · subtext · `밀어서 보기 →` · dark grid + logo |
@@ -48,7 +50,7 @@ Append to the body text, after the 3 content lines:
 
 ## Step 1 — Copy the master
 
-`copy-design` with `design_id: DAHLSiSl5MA`, title `Trend News · {YYYY.MM.DD}`.
+`copy-design` with `design_id: DAHLSzY4WsQ`, title `Trend News · {YYYY.MM.DD}`.
 Record the new `design_id` and its edit URL.
 
 ## Step 2 — Upload this week's 4 background photos
