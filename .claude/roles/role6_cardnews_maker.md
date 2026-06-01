@@ -128,6 +128,40 @@ Write `output/post_{MMDD}.txt`.
 - 사람이 직접 쓴 것처럼 자연스럽게, 각 트렌드 2–3문장
 - 해시태그 8–10개, 마지막 줄에 모아서
 
+### Append a background-music block to the caption file
+At the bottom of `output/post_{MMDD}.txt`, after the hashtag line, append a `🎵 추천 배경음악` block so the recommendation ships with the caption (creator can pick it directly in the Instagram audio picker):
+```
+
+——
+
+🎵 추천 배경음악 (인스타 오디오 검색용)
+1. [트랙명 — 아티스트] · [무드]
+2. [트랙명 — 아티스트] · [무드]
+3. [트랙명 — 아티스트] · [무드]
+```
+
+---
+
+## Step 7b — Recommend Instagram background music
+
+The card news posts as a **carousel / Reel**, so pick audio that fits a Gen-Z editorial trend brief: **clean, modern, low-vocal, upbeat-but-calm** so on-screen Korean text stays the focus. Recommend **3 tracks**, each tagged with a mood, drawn from sources a creator can actually use inside the Instagram app.
+
+**Selection rules**
+- Prefer tracks **searchable in Instagram's in-app audio library** (`오디오 추가` picker) — that is the only audio a personal/creator account can attach to a Reel/carousel without licensing friction.
+- Match the mood to the week's lead trend: AI/tech weeks → minimal electronic / future-funk; consumer/lifestyle → warm lo-fi / chillhop; fashion/beauty → dreamy synth-pop / soft house.
+- Keep it **low-vocal or instrumental** so the headline text reads clearly; avoid lyric-heavy or high-energy drops that fight the copy.
+- Note that licensed commercial pop may be **region/account-type restricted** — always offer at least one **royalty-free / Instagram-original** fallback.
+
+**Default go-to pool (safe, Instagram-available moods)**
+| Mood | Use when | Example direction |
+|---|---|---|
+| Minimal electronic / future-funk | AI · 글로벌 테크 주제 | clean four-on-the-floor, light synth pluck, no vocals |
+| Warm lo-fi / chillhop | 소비·라이프스타일 주제 | mellow boom-bap, vinyl texture, cozy keys |
+| Dreamy synth-pop / soft house | 패션·뷰티 주제 | airy pads, soft female hum, gentle groove |
+| Trending Reels audio (이번 주 인기 오디오) | 도달·노출 우선일 때 | pick a currently-rising sound from the 인기 탭, low-vocal preferred |
+
+Output the 3 picks (track name + artist where known + mood) into the caption file (above) **and** restate them in the Telegram completion message.
+
 ---
 
 ## Step 8 — Send the single Telegram completion message
@@ -147,6 +181,8 @@ Send **one** Telegram reply. Attach the 2 files (`files` array) and put the Canv
 4. [이모지] [trend title 4]
 
 🖼 이미지 소스: [domain1] + [domain2] + [domain3]
+
+🎵 추천 배경음악 (인스타 오디오): [track 1] · [track 2] · [track 3]
 ```
 
 Attach (absolute paths, confirm both exist on disk first):
