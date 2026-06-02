@@ -27,7 +27,7 @@ This is the user's **public reference copy** (public link `https://canva.link/tq
 ### Page map (6 pages, 1080×1350)
 | Page | Role | Key elements |
 |---|---|---|
-| 1 | Cover | kicker `WEEKLY TREND BRIEF · {YYYY.MM.DD}` · wordmark `Trend News` · 3-line headline · subtext · `밀어서 보기 →` · dark grid + logo |
+| 1 | Cover | kicker `WEEKLY TREND BRIEF · {YYYY.MM.DD}` · wordmark `Trend News` · **FIXED** headline `일주일의\n트렌드를\n읽다` (never replace) · subtext (3-line weekly summary) · `밀어서 보기 →` · dark grid + logo |
 | 2 | Trend #1 | kicker `#1 · {CATEGORY}` · title · body(3 lines)+reference block · photo background |
 | 3 | Trend #2 | kicker `#2 · {CATEGORY}` · title · body+references · photo background |
 | 4 | Trend #3 | kicker `#3 · {CATEGORY}` · title · body+references · photo background |
@@ -70,9 +70,13 @@ The response returns **all `richtexts` and `fills` with their current element ID
 ## Step 4 — Replace all content (batch into one `perform-editing-operations` call where possible)
 
 Use these operation types only (Canva cannot create new elements):
-- `replace_text` — cover date+headline, each page's kicker/title/body(+reference block), summary text.
+- `replace_text` — cover kicker (date only) + cover subtext (weekly summary); each page's kicker/title/body(+reference block); summary text.
 - `update_fill` — swap each page 2–5 background photo element to this week's uploaded `asset_id`.
 - `format_text` — only if a contrast fix is needed (see Step 5).
+
+**Cover FIXED elements — NEVER replace these:**
+- Headline `일주일의\n트렌드를\n읽다` — this is a permanent design tagline, not a weekly field. Replacing it breaks visual consistency across issues.
+- Wordmark `Trend News` — always leave as-is.
 
 **Text color rule (verified readable):**
 - Content pages (2–5) use a **light page base + photo texture + DARK text**: title `#11121A`, body `#1E2230`, kicker `#2E6FB0`.
@@ -202,7 +206,7 @@ files: [
 - Page 2–5 title: ≤ 12 Korean chars
 - Page 2–5 body: 3 lines, each ≤ 30 Korean chars
 - Reference block: ≤ 2 sources, each line ≤ 40 chars
-- Summary keyword block: `이번 주의 키워드,\n[단어]` — label line is always `이번 주의 키워드,` (with comma); second line is **one Korean word** (2–4 chars) that compresses all 4 trends. Choose a word that captures the overarching mood/movement (e.g. `도약`, `확산`, `전환`, `돌파`). Never omit the keyword word — the block must have both lines.
+- Summary keyword block: `이번 주의\n키워드,\n[단어]` — always **3 lines**: line 1 `이번 주의`, line 2 `키워드,` (with comma), line 3 is **one Korean word** (2–4 chars) that compresses all 4 trends (e.g. `도약`, `확산`, `전환`, `돌파`). Never omit the keyword word.
 
 ## Failure Handling
 - `copy-design` / `upload-asset-from-url` failure → retry once, then send Telegram error naming the step.
