@@ -82,12 +82,13 @@ Use these operation types only (Canva cannot create new elements):
 
 ## Step 5 — Verify readability (mandatory, mid-transaction)
 
-`get-design-thumbnail` for content pages **2–5 only** (cover/summary are text-only and unchanged in layout; `start-editing-transaction` already returns the cover thumbnail). Check:
+`get-design-thumbnail` for content pages **2–5** and **page 6 (summary)**. Check:
 - No text clipped or overflowing the card.
 - Dark text is clearly legible over the photo (no washout, no dark-on-dark).
 - Reference block fits in the lower area and looks balanced.
+- **Page 6 specific:** confirm `이번 주의 키워드` label is visible as a single line (white text on dark background). If it is missing or invisible, re-apply `replace_text` to element with current text closest to that phrase.
 
-If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-fetch **only that page**. Don't commit until pages 2–5 pass.
+If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-fetch **only that page**. Don't commit until pages 2–6 pass.
 
 ## Step 6 — Commit
 
@@ -201,7 +202,7 @@ files: [
 - Page 2–5 title: ≤ 12 Korean chars
 - Page 2–5 body: 3 lines, each ≤ 30 Korean chars
 - Reference block: ≤ 2 sources, each line ≤ 40 chars
-- Summary headline: single line `이번 주의 키워드` (≤ 10 Korean chars)
+- Summary headline: **fixed label** `이번 주의 키워드` — always exactly this phrase, single line, **NO `\n`**. Never omit, never replace with other text.
 
 ## Failure Handling
 - `copy-design` / `upload-asset-from-url` failure → retry once, then send Telegram error naming the step.
