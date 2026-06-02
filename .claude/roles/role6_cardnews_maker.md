@@ -32,7 +32,7 @@ This is the user's **public reference copy** (public link `https://canva.link/tq
 | 3 | Trend #2 | kicker `#2 · {CATEGORY}` · title · body+references · photo background |
 | 4 | Trend #3 | kicker `#3 · {CATEGORY}` · title · body+references · photo background |
 | 5 | Trend #4 | kicker `#4 · {CATEGORY}` · title · body+references · photo background |
-| 6 | Summary | kicker `SUMMARY` · single-line keyword headline `이번 주의 키워드` · 2-line recap · button `다음 주에 또 만나요 👋` |
+| 6 | Summary | kicker `SUMMARY` · label+keyword block `이번 주의 키워드,\n[단어]` · 2-line recap · button `다음 주에 또 만나요 👋` |
 
 ### Reference block format (bottom of pages 2–5, inside the body text element)
 Append to the body text, after the 3 content lines:
@@ -202,7 +202,7 @@ files: [
 - Page 2–5 title: ≤ 12 Korean chars
 - Page 2–5 body: 3 lines, each ≤ 30 Korean chars
 - Reference block: ≤ 2 sources, each line ≤ 40 chars
-- Summary headline: **fixed label** `이번 주의 키워드` — always exactly this phrase, single line, **NO `\n`**. Never omit, never replace with other text.
+- Summary keyword block: `이번 주의 키워드,\n[단어]` — label line is always `이번 주의 키워드,` (with comma); second line is **one Korean word** (2–4 chars) that compresses all 4 trends. Choose a word that captures the overarching mood/movement (e.g. `도약`, `확산`, `전환`, `돌파`). Never omit the keyword word — the block must have both lines.
 
 ## Failure Handling
 - `copy-design` / `upload-asset-from-url` failure → retry once, then send Telegram error naming the step.
