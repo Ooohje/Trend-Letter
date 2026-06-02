@@ -54,6 +54,20 @@ curl -s -o /dev/null -w "%{http_code} %{url_effective}\n" -A "Mozilla/5.0" "URL1
 - HTTP `404` / `429` / other → discard, try next candidate from a different source
 - Maximum **3 candidates per slot** before marking as failed
 
+## No-Reuse Rule (mandatory)
+**Never reuse a Pexels photo ID that appeared in any previous issue.**  
+Known used IDs (cumulative — append each week's IDs after publishing):
+```
+# Vol.22 / 0601
+8386437, 2599244, 8439093, 8199219, 6340704, 9630189, 7043582, 3762890,
+12124831, 17489163, 6636463, 51165
+
+# Vol.23 / 0602
+8566526, 534216, 785418
+```
+Before picking a candidate: confirm its ID does **not** appear in the list above.  
+If the first search returns only used IDs, run a second search with different keywords and pick a fresh ID.
+
 ## Domain Diversity Rule
 After filling all 12 slots, count distinct top-level domains.  
 **Minimum 3 distinct domains required.**  
