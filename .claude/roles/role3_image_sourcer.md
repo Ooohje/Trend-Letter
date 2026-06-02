@@ -63,7 +63,7 @@ Known used IDs (cumulative — append each week's IDs after publishing):
 12124831, 17489163, 6636463, 51165
 
 # Vol.23 / 0602
-8566526, 534216, 785418
+8566526, 534216, 785418, 14314636
 ```
 Before picking a candidate: confirm its ID does **not** appear in the list above.  
 If the first search returns only used IDs, run a second search with different keywords and pick a fresh ID.
