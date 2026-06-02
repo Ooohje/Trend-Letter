@@ -27,7 +27,7 @@ This is the user's **public reference copy** (public link `https://canva.link/tq
 ### Page map (6 pages, 1080×1350)
 | Page | Role | Key elements |
 |---|---|---|
-| 1 | Cover | kicker `WEEKLY TREND BRIEF · {YYYY.MM.DD}` · wordmark `Trend News` · **FIXED** headline `일주일의\n트렌드를\n읽다` (never replace) · subtext (3-line weekly summary) · `밀어서 보기 →` · dark grid + logo |
+| 1 | Cover | kicker `WEEKLY TREND BRIEF · {YYYY.MM.DD}` · wordmark `Trend News` · 3-line weekly headline (각 행 ≤ 8자, 이번 주 분위기 압축) · subtext (3-line 4-trend summary) · `밀어서 보기 →` · dark grid + logo |
 | 2 | Trend #1 | kicker `#1 · {CATEGORY}` · title · body(3 lines)+reference block · photo background |
 | 3 | Trend #2 | kicker `#2 · {CATEGORY}` · title · body+references · photo background |
 | 4 | Trend #3 | kicker `#3 · {CATEGORY}` · title · body+references · photo background |
@@ -75,7 +75,6 @@ Use these operation types only (Canva cannot create new elements):
 - `format_text` — only if a contrast fix is needed (see Step 5).
 
 **Cover FIXED elements — NEVER replace these:**
-- Headline `일주일의\n트렌드를\n읽다` — this is a permanent design tagline, not a weekly field. Replacing it breaks visual consistency across issues.
 - Wordmark `Trend News` — always leave as-is.
 
 **Text color rule (verified readable):**
