@@ -47,11 +47,13 @@ Append to the body text, after the 3 content lines:
 {3 body lines}
 
 ─────────────────────
-참고 ·  {매체} 「{기사 제목}」 {YYYY.MM.DD}
+참고
+·  {매체} 「{기사 제목}」 {YYYY.MM.DD}
 ·  {매체2} 「{기사 제목2}」 {YYYY.MM.DD}
 ```
 - Use 1–2 sources per page from ROLE_2 references.
 - `─────────────────────` is a literal divider line (21 box-drawing chars).
+- **`참고` sits on its own line; each source line starts with `·` on a new line** (참고 뒤에 줄바꿈, 각 출처는 별도 줄).
 - Keep outlet/article names as published (English allowed for foreign outlets).
 
 ---
