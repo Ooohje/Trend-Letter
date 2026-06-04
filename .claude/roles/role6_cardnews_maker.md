@@ -60,8 +60,10 @@ Append to the body text, after the 3 content lines:
 
 ## Step 1 — Copy the master
 
-`copy-design` with `design_id: DAHLTLAKV50`, title `Trend News · {YYYY.MM.DD}`.
+`copy-design` with `design_id: DAHLTLAKV50`.
 Record the new `design_id` and its edit URL.
+
+> ⚠️ `copy-design` has **no title parameter**, so the copy inherits the master's name `Trend News Reference`. You **must** rename it in Step 4 via an `update_title` operation → `Trend News · {YYYY.MM.DD}` (브랜드 통일감). Never leave the saved design named "…Reference".
 
 ## Step 2 — Upload this week's 4 background photos
 
@@ -79,6 +81,7 @@ The response returns **all `richtexts` and `fills` with their current element ID
 ## Step 4 — Replace all content (batch into one `perform-editing-operations` call where possible)
 
 Use these operation types only (Canva cannot create new elements):
+- `update_title` — set the design title to `Trend News · {YYYY.MM.DD}` (브랜드 통일감 — never leave it as "Trend News Reference").
 - `replace_text` — cover kicker (date only) + cover subtext (weekly summary); each page's kicker/title/body(+reference block); summary text.
 - `update_fill` — swap each page 2–5 background photo element to this week's uploaded `asset_id`.
 - `format_text` — only if a contrast fix is needed (see Step 5).
