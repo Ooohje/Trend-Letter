@@ -3,7 +3,7 @@
 ## System Overview
 Auto-generates, from a single Telegram trigger, three deliverables:
 1. **HTML newsletter** → `output/trend_letter_{MMDD}.html`
-2. **"Trend News" card news IN CANVA** (6 pages) → a shareable Canva edit link
+2. **"Trend News" card news IN CANVA** (7 pages) → a shareable Canva edit link
 3. **Instagram post caption** → `output/post_{MMDD}.txt`
 
 Six roles execute in strict sequence. Each role spec lives in `.claude/roles/`.

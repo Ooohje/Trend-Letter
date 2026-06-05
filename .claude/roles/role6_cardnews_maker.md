@@ -1,6 +1,6 @@
 # ROLE_6 · CARDNEWS_MAKER (Canva-native)
 
-**Purpose:** Build the **"Trend News"** 6-page card news **inside Canva** by copying the approved master design and replacing its content, then write the Instagram caption and send the single Telegram completion message.
+**Purpose:** Build the **"Trend News"** 7-page card news **inside Canva** by copying the approved master design and replacing its content, then write the Instagram caption and send the single Telegram completion message.
 
 **There is NO HTML→PNG pipeline.** Do not run Python, Edge headless, or screenshot scripts. The card news lives entirely in Canva and is delivered as an edit link.
 
@@ -18,11 +18,11 @@
 
 ## MASTER TEMPLATE (the approved look)
 
-**Master design ID:** `DAHLTLAKV50` (title "Trend News Reference", Instagram portrait **1080×1350**, 6 pages, title wordmark "Trend News", dark editorial grid, blue accents, genZ lab logo top-right on every page).
-This is the user's **public reference copy** (public link `https://canva.link/tqqnb3s6ekfqfap`) — the finalized look the weekly output must match. Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, and the reference-block styling the user finalized.
-(Previous master `DAHLSzY4WsQ` is superseded by this reference copy.)
+**Master design ID:** `DAHLrfLVQck` (Instagram portrait **1080×1350**, **7 pages**, wordmark "Trend News", dark editorial grid, blue accents, genZ lab logo top-right on every page).
+Edit link: `https://www.canva.com/design/DAHLrfLVQck/edit`. This is the user's **finalized reference design** — the look the weekly output must match. Always **copy** this master — never edit the master itself. The copy inherits the exact layout, fonts, grid background, logo, reference-block styling, and the **finalized page order (Galaxy is page 6, Summary is page 7)**.
+(Previous masters `DAHLTLAKV50` and `DAHLSzY4WsQ` are superseded by this reference.)
 
-> Logo note: the genZ lab logo (asset `MAHLR2vMuLE`) is a **raster image** top-right on all 6 pages. The editing API exposes **no background-removal, filter/effect, or recolor/tint** operations for images — only replace (`update_fill`), move, resize, delete. So per-page logo recoloring (e.g. background-remove → color filter to match each page) is a **Canva-UI-only manual step**; the bot **leaves the logo untouched**. To enable programmatic per-page swaps instead, provide pre-colored logo asset IDs and the bot can `update_fill` each page.
+> Logo note: the genZ lab logo (asset `MAHLR2vMuLE`) is a **raster image** top-right on all 7 pages. The editing API exposes **no background-removal, filter/effect, or recolor/tint** operations for images — only replace (`update_fill`), move, resize, delete. So per-page logo recoloring (e.g. background-remove → color filter to match each page) is a **Canva-UI-only manual step**; the bot **leaves the logo untouched**. To enable programmatic per-page swaps instead, provide pre-colored logo asset IDs and the bot can `update_fill` each page.
 
 ### Page map (7 pages, 1080×1350)
 | Page | Role | Key elements |
@@ -32,10 +32,10 @@ This is the user's **public reference copy** (public link `https://canva.link/tq
 | 3 | Trend #2 | kicker `#2 · {CATEGORY}` · title · body+references · photo background |
 | 4 | Trend #3 | kicker `#3 · {CATEGORY}` · title · body+references · photo background |
 | 5 | Trend #4 | kicker `#4 · {CATEGORY}` · title · body+references · photo background |
-| 6 | Summary | kicker `SUMMARY` · label+keyword block `이번 주의 키워드,\n[단어]` · 2-line recap · button `다음 주에 또 만나요 👋` |
-| 7 | Galaxy | kicker `FOR GALAXY` · title `갤럭시라면?` · 4-line apply block (① ② ③ ④ 형식, 각 트렌드→갤럭시 적용 질문) · 구분선+마무리 한 줄 · photo background |
+| 6 | Galaxy | kicker `FOR GALAXY` · title `갤럭시라면?` · 4-line apply block (① ② ③ ④ 형식, 각 트렌드→갤럭시 적용 질문) · 구분선+마무리 한 줄 · photo background |
+| 7 | Summary | kicker `SUMMARY` · label+keyword block `이번 주의 키워드,\n[단어]` · 2-line recap · button `다음 주에 또 만나요 👋` |
 
-**Page 7 (Galaxy) 작성 규칙:**
+**Page 6 (Galaxy) 작성 규칙:**
 - kicker: 항상 `FOR GALAXY` (고정 — "직원" 등 내부용 표현 금지, 인스타그램 공개 게시용)
 - title: 항상 `갤럭시라면?`
 - body: 4가지 트렌드 각각에 대해 갤럭시 관점의 질문 한 줄 (① ② ③ ④), 구분선 후 행동 유도 한 줄
@@ -60,15 +60,16 @@ Append to the body text, after the 3 content lines:
 
 ## Step 1 — Copy the master
 
-`copy-design` with `design_id: DAHLTLAKV50`.
-Record the new `design_id` and its edit URL.
+`copy-design` with `design_id: DAHLrfLVQck`.
+Record the new `design_id` and its edit URL. The copy already has **all 7 pages** including the Galaxy page (page 6) — no page needs to be created or appended.
 
-> ⚠️ `copy-design` has **no title parameter**, so the copy inherits the master's name `Trend News Reference`. You **must** rename it in Step 4 via an `update_title` operation → `Trend News · {YYYY.MM.DD}` (브랜드 통일감). Never leave the saved design named "…Reference".
+> ⚠️ `copy-design` has **no title parameter**, so the copy inherits the master's name. You **must** rename it in Step 4 via an `update_title` operation → `Trend News · {YYYY.MM.DD}` (브랜드 통일감).
 
-## Step 2 — Upload this week's 4 background photos
+## Step 2 — Upload this week's 5 background photos
 
-For each trend's ROLE_3 card image URL, call `upload-asset-from-url` → record the 4 returned `asset_id`s.
-(These replace the previous week's backgrounds on pages 2–5.)
+Call `upload-asset-from-url` for each and record the returned `asset_id`s:
+- **4 trend card images** (ROLE_3) → replace backgrounds on pages 2–5.
+- **1 Galaxy page image** → replace background on page 6. Use an **unused** Pexels smartphone/device/tech image (check the No-Reuse list in ROLE_3).
 
 ## Step 3 — Open an editing transaction
 
@@ -76,70 +77,41 @@ For each trend's ROLE_3 card image URL, call `upload-asset-from-url` → record 
 The response returns **all `richtexts` and `fills` with their current element IDs**. Element IDs are unique per design copy, so **map them by current text / page**, not by memorized IDs:
 - Cover: kicker (`WEEKLY TREND BRIEF · …`), wordmark (`Trend News`), headline, subtext.
 - Pages 2–5: kicker (`#N · …`), title, body, and the full-page photo `fill` element.
-- Page 6: summary kicker, headline, recap, button.
+- Page 6 (Galaxy): kicker (`FOR GALAXY`), title (`갤럭시라면?`), body (① ② ③ ④ block), and the full-page photo `fill` element.
+- Page 7 (Summary): summary kicker, keyword block, recap, button.
 
 ## Step 4 — Replace all content (batch into one `perform-editing-operations` call where possible)
 
 Use these operation types only (Canva cannot create new elements):
 - `update_title` — set the design title to `Trend News · {YYYY.MM.DD}` (브랜드 통일감 — never leave it as "Trend News Reference").
-- `replace_text` — cover kicker (date only) + cover subtext (weekly summary); each page's kicker/title/body(+reference block); summary text.
-- `update_fill` — swap each page 2–5 background photo element to this week's uploaded `asset_id`.
+- `replace_text` — cover kicker (date only) + cover subtext (weekly summary); each trend page's kicker/title/body(+reference block); the Galaxy page (6) body (4 trend→Galaxy questions); summary text.
+- `update_fill` — swap each page 2–6 background photo element to this week's uploaded `asset_id` (4 trends + 1 Galaxy).
 - `format_text` — only if a contrast fix is needed (see Step 5).
 
 **Cover FIXED elements — NEVER replace these:**
 - Wordmark `Trend News` — always leave as-is.
 
 **Text color rule (verified readable):**
-- Content pages (2–5) use a **light page base + photo texture + DARK text**: title `#11121A`, body `#1E2230`, kicker `#2E6FB0`.
+- Content pages (2–6, trends + Galaxy) use a **light page base + photo texture + DARK text**: title `#11121A`, body `#1E2230`, kicker `#2E6FB0`.
 - Cover + summary sit on the **dark grid**, so their text stays **light** (white / blue) — leave as-is from the master.
 
 **Background opacity rule:** photos sit at ~`0.26–0.42` opacity over the light base so dark text stays legible. If a swapped photo is dark/busy, lower its opacity toward `0.26`.
 
 ## Step 5 — Verify readability (mandatory, mid-transaction)
 
-`get-design-thumbnail` for content pages **2–5** and **page 6 (summary)**. Check:
+`get-design-thumbnail` for content pages **2–6** (4 trends + Galaxy) and **page 7 (summary)**. Check:
 - No text clipped or overflowing the card.
 - Dark text is clearly legible over the photo (no washout, no dark-on-dark).
-- Reference block fits in the lower area and looks balanced.
-- **Page 6 specific:** confirm `이번 주의 키워드` label is visible as a single line (white text on dark background). If it is missing or invisible, re-apply `replace_text` to element with current text closest to that phrase.
+- Reference block (pages 2–5) and the Galaxy ① ② ③ ④ block (page 6) fit in the lower area and look balanced.
+- **Page 7 specific:** confirm `이번 주의 키워드` label is visible as a single line (white text on dark background). If it is missing or invisible, re-apply `replace_text` to element with current text closest to that phrase.
 
-If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-fetch **only that page**. Don't commit until pages 2–6 pass.
+If a page fails: lower that photo's opacity (re-`update_fill` / re-insert at lower opacity) or shorten the flagged text, then re-fetch **only that page**. Don't commit until pages 2–7 pass.
 
 ## Step 6 — Commit
 
 `commit-editing-transaction` on the transaction. Autonomously — do **not** ask the user first (global constraint). Record the final edit link from `get-design`.
 
----
-
-## Step 6b — Build and append the Galaxy page (page 7)
-
-**Purpose:** Add a 7th page to the committed design that applies the 4 trends to Samsung Galaxy, worded for public Instagram audiences (no internal "직원" language).
-
-1. **Copy page 5** of the committed design as a standalone 1-page temp design:  
-   `copy-design` with `design_id: {this week's design_id}`, `page_numbers: [5]`  
-   Record the new temp `design_id`.
-
-2. **Upload a fresh background** for the Galaxy page (`upload-asset-from-url`).  
-   Use an unused Pexels smartphone/device/tech image (check the No-Reuse list in ROLE_3).
-
-3. **Open a transaction on the temp design** (`start-editing-transaction`).
-
-4. **Edit the temp page** into the Galaxy page in one `perform-editing-operations` call:
-   - kicker element → `FOR GALAXY`
-   - title element → `갤럭시라면?`
-   - body element → 4-line apply block (① ② ③ ④) + divider + action line
-   - background fill → fresh asset uploaded above
-
-5. **Commit the temp design** (`commit-editing-transaction`).
-
-6. **Append as page 7** using `merge-designs`:
-   ```
-   type: modify_existing_design
-   design_id: {this week's design_id}
-   operations: [{ type: insert_pages, source: { type: design, design_id: {temp_id}, page_numbers: [1] } }]
-   ```
-
-7. The final design now has **7 pages**. Record the updated edit link from `get-design`.
+> Note: the Galaxy page (page 6) is **baked into the master** `DAHLrfLVQck`, so it is edited inline in Step 4 like any other page — there is **no copy/merge step** anymore. The committed design already has all 7 pages in the correct order.
 
 ---
 
