@@ -19,6 +19,7 @@ The card news is built **natively in Canva** (ROLE_6) — there is **NO HTML→P
 - Read today's date from the `currentDate` value in the system context.
 - `bypassPermissions` is active — all tool calls are pre-authorized.
 - Run independent operations (searches, image fetches, curl checks) **in parallel** wherever possible.
+- **조직 관점 (MX 사업부):** 이 봇의 운영 주체는 삼성전자 DX부문 **MX(Mobile eXperience) 사업부**예요 — 갤럭시 스마트폰·태블릿·워치·버즈 등 **모바일 단말과 경험·서비스·생태계** 담당. 카드뉴스 `갤럭시라면?(FOR GALAXY)`와 HTML `📱 삼성전자 갤럭시라면?` 섹션의 모든 적용 포인트는 **MX 관점**(단말·Galaxy AI·One UI·빅스비 경험, 삼성페이/헬스/멤버십 생태계, 단말 라인업·가격 전략)으로 작성해요. **엑시노스·NPU·파운드리·HBM 등 반도체 칩 설계/제조는 DS(Device Solutions) 부문 소관**이므로 갤럭시 적용 포인트로 쓰지 마세요(반도체 가격·수급이 단말에 주는 영향은 MX 관점에서 다룰 수 있어요).
 
 **Token budget (keep each run cheap):**
 - Batch independent tool calls into one message (parallel); never serialize what can run together.

@@ -41,6 +41,12 @@ Edit link: `https://www.canva.com/design/DAHLrfLVQck/edit`. This is the user's *
 - body: 4가지 트렌드 각각에 대해 갤럭시 관점의 질문 한 줄 (① ② ③ ④), 구분선 후 행동 유도 한 줄
 - 배경: 이번 주 미사용 Pexels 이미지 (스마트폰·기기·테크 테마 권장)
 
+**작성 주체·관점 (MX 사업부 고정):**
+- 작성 주체는 **삼성전자 DX부문 MX(Mobile eXperience) 사업부**예요. MX는 **갤럭시 스마트폰·태블릿·워치·버즈 등 모바일 단말과 그 경험·서비스·생태계**를 담당해요.
+- 모든 ① ② ③ ④ 질문은 **MX 관점**으로 작성: 단말 기능·디자인, **Galaxy AI·One UI·빅스비** 경험, **삼성페이·삼성헬스·삼성멤버십** 생태계, 단말 라인업·출시가·가격 전략, 부품 조달이 단말 원가·출시에 미치는 영향.
+- ❌ **금지:** 엑시노스·NPU·AP 설계, 파운드리, HBM 등 **반도체 칩 자체의 설계·제조는 DS(Device Solutions) 부문 소관**이므로 갤럭시(MX) 적용 포인트로 쓰지 말 것. (단, 반도체 **가격·수급 변동이 갤럭시 단말 원가·출시에 주는 영향**은 MX 관점에서 다룰 수 있음.)
+- 이 규칙은 HTML 뉴스레터의 `📱 삼성전자 갤럭시라면?` 섹션에도 **동일하게 적용**해요.
+
 ### Reference block format (bottom of pages 2–5, inside the body text element)
 Append to the body text, after the 3 content lines:
 ```

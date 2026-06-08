@@ -64,6 +64,18 @@ Known used IDs (cumulative — append each week's IDs after publishing):
 
 # Vol.23 / 0602
 8566526, 534216, 785418, 14314636
+
+# Vol.24 / 0604
+28215391, 31665489, 8157696, 7466763, 5269662,
+3997384, 2281695, 6954960, 7151031, 6473732, 5253002
+
+# Vol.25 / 0605
+6704936, 4573596, 20124001, 27501997, 34357798,
+5650039, 5632356, 29709957, 7947742, 28682356, 28682358, 30608594
+
+# Vol.26 / 0608
+47261, 3945672, 27377993, 35118208, 16594724,
+6214126, 6207757, 6956903, 30408335, 2533266, 5559997
 ```
 Before picking a candidate: confirm its ID does **not** appear in the list above.  
 If the first search returns only used IDs, run a second search with different keywords and pick a fresh ID.
