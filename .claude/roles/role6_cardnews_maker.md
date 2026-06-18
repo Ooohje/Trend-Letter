@@ -193,6 +193,29 @@ Output the 3 picks (track name + artist where known + mood) into the caption fil
 
 ---
 
+## Step 7c — Write reference URL file
+
+Write `output/refs_{MMDD}.txt` — one entry per card news content page (pages 2–5 + Galaxy page 8 if it has a distinct source).
+
+### Format
+```
+Trend News · {YYYY.MM.DD} — 카드뉴스 출처 URL
+
+──────────────────────────────────────
+Page {N} · #{N} {카테고리} — {트렌드 제목}
+──────────────────────────────────────
+{매체} 「{기사 제목}」 {YYYY.MM.DD}
+{URL}
+
+(repeat for each content page)
+```
+
+- Use ROLE_2 reference URLs (already verified as real).
+- Galaxy page: note "(4개 트렌드 출처 동일 — 위 Page 4–7 참고)" if no separate source.
+- One file per issue; overwrite silently if it already exists.
+
+---
+
 ## Step 8 — Print completion summary to chat
 
 Output the following summary directly in the chat response:
@@ -202,6 +225,7 @@ Output the following summary directly in the chat response:
 
 📄 HTML: output/trend_letter_{MMDD}.html
 📝 인스타 캡션: output/post_{MMDD}.txt
+🔗 출처 URL: output/refs_{MMDD}.txt
 🎨 Trend News 카드뉴스(캔바): {canva_edit_link}
 
 📌 이번 호 4가지 트렌드:
