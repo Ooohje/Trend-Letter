@@ -1,12 +1,11 @@
 # Trend Letter Bot
 
-Claude Code agent that auto-generates a Korean trend newsletter HTML from a Telegram trigger.
+Claude Code agent that auto-generates a Korean trend newsletter, Canva card news, and Instagram caption.
 
 ## Setup (new machine)
 
 ### 1. Prerequisites
 - [Claude Code](https://claude.ai/code) installed and logged in
-- Telegram plugin enabled: run `/telegram:configure` inside Claude Code
 
 ### 2. Clone and open
 ```bash
@@ -15,18 +14,15 @@ cd Trend-Letter
 claude
 ```
 
-### 3. Telegram access
-Run `/telegram:access` in Claude Code to pair your Telegram account.
-
-### 4. Trigger
-Send this message from Telegram:
+### 3. Trigger
+Type this message in Claude Code:
 ```
 트렌드 레터 만들어줘
 ```
 
-The agent runs fully autonomously — no confirmation prompts. Two Telegram messages will arrive:
-1. Start notification
-2. Completion with the HTML file attached
+The agent runs fully autonomously — no confirmation prompts. When done, a completion summary appears in chat with:
+- Paths to the generated HTML and caption files
+- The Canva edit link
 
 ## Project structure
 
@@ -39,7 +35,8 @@ CLAUDE.md                        # Orchestrator (loads roles via @import)
     role2_trend_researcher.md    # Searches for 4 recent trends
     role3_image_sourcer.md       # Sources & verifies images (Pexels/Unsplash/Wikimedia)
     role4_content_writer.md      # Assembles final HTML
-    role5_publisher.md           # Writes file + sends Telegram reply
+    role5_publisher.md           # Writes file to disk
+    role6_cardnews_maker.md      # Builds Canva card news + Instagram caption
   hooks/
     validate_html.ps1            # Blocks write if HTML structure is invalid
     check_output.ps1             # Reports output file status on session end

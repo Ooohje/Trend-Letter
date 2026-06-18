@@ -16,4 +16,4 @@
 4. Confirm every CSS class listed in Outputs above is present — note any that are missing
 
 **Acceptance gate:** CSS class list confirmed + tone style confirmed.  
-If zero reference files are readable → halt all execution, send Telegram error, stop.
+If zero reference files are readable → halt all execution and report the error, stop.

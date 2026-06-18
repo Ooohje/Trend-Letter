@@ -1,6 +1,6 @@
 # ROLE_6 · CARDNEWS_MAKER (Canva-native)
 
-**Purpose:** Build the **"Trend News"** 7-page card news **inside Canva** by copying the approved master design and replacing its content, then write the Instagram caption and send the single Telegram completion message.
+**Purpose:** Build the **"Trend News"** 7-page card news **inside Canva** by copying the approved master design and replacing its content, then write the Instagram caption and output a completion summary.
 
 **There is NO HTML→PNG pipeline.** Do not run Python, Edge headless, or screenshot scripts. The card news lives entirely in Canva and is delivered as an edit link.
 
@@ -12,7 +12,7 @@
 **Outputs:**
 - A Canva design (copy of the master) populated for this week → **edit link**
 - `output/post_{MMDD}.txt` (Instagram caption)
-- One Telegram completion message
+- Completion summary printed to chat
 
 ---
 
@@ -189,18 +189,19 @@ The card news posts as a **carousel / Reel**, so pick audio that fits a Gen-Z ed
 | Dreamy synth-pop / soft house | 패션·뷰티 주제 | airy pads, soft female hum, gentle groove |
 | Trending Reels audio (이번 주 인기 오디오) | 도달·노출 우선일 때 | pick a currently-rising sound from the 인기 탭, low-vocal preferred |
 
-Output the 3 picks (track name + artist where known + mood) into the caption file (above) **and** restate them in the Telegram completion message.
+Output the 3 picks (track name + artist where known + mood) into the caption file (above) **and** include them in the completion summary.
 
 ---
 
-## Step 8 — Send the single Telegram completion message
+## Step 8 — Print completion summary to chat
 
-Send **one** Telegram reply. Attach the 2 files (`files` array) and put the Canva link in the message body.
+Output the following summary directly in the chat response:
 
 ```
 ✅ 이번 주 트렌드 레터 완성됐어요! ({YYYY.MM.DD})
 
-📄 HTML 뉴스레터 + 📝 인스타 캡션 첨부했어요.
+📄 HTML: output/trend_letter_{MMDD}.html
+📝 인스타 캡션: output/post_{MMDD}.txt
 🎨 Trend News 카드뉴스(캔바): {canva_edit_link}
 
 📌 이번 호 4가지 트렌드:
@@ -214,14 +215,6 @@ Send **one** Telegram reply. Attach the 2 files (`files` array) and put the Canv
 🎵 추천 배경음악 (인스타 오디오): [track 1] · [track 2] · [track 3]
 ```
 
-Attach (absolute paths, confirm both exist on disk first):
-```
-files: [
-  "output/trend_letter_{MMDD}.html",
-  "output/post_{MMDD}.txt"
-]
-```
-
 ---
 
 ## Content Limits (prevent card overflow)
@@ -232,5 +225,5 @@ files: [
 - Summary keyword block: `이번 주의\n키워드,\n[단어]` — always **3 lines**: line 1 `이번 주의`, line 2 `키워드,` (with comma), line 3 is **one Korean word** (2–4 chars) that compresses all 4 trends (e.g. `도약`, `확산`, `전환`, `돌파`). Never omit the keyword word.
 
 ## Failure Handling
-- `copy-design` / `upload-asset-from-url` failure → retry once, then send Telegram error naming the step.
+- `copy-design` / `upload-asset-from-url` failure → retry once, then report the error naming the step in chat.
 - Uncommitted transaction must never be left open — either commit (on success) or `cancel-editing-transaction` (on abort).

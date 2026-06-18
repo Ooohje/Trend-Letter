@@ -1,7 +1,7 @@
 # Trend Letter Bot — Orchestrator
 
 ## System Overview
-Auto-generates, from a single Telegram trigger, three deliverables:
+Auto-generates three deliverables:
 1. **HTML newsletter** → `output/trend_letter_{MMDD}.html`
 2. **"Trend News" card news IN CANVA** (7 pages) → a shareable Canva edit link
 3. **Instagram post caption** → `output/post_{MMDD}.txt`
@@ -11,8 +11,6 @@ The card news is built **natively in Canva** (ROLE_6) — there is **NO HTML→P
 
 **Global constraints (apply to every role):**
 - **Never pause mid-task to ask the user for confirmation.** Execute fully autonomously (including the Canva `commit-editing-transaction`).
-- **Telegram messages: exactly 2 per run** — start notification + completion. No in-between messages.
-  - Completion message attaches the HTML file + the `post_{MMDD}.txt` file, and includes the **Canva edit link** as text.
 - **Dating:** identify each issue by **today's date (`YYYY.MM.DD`)**, NOT by a "Vol.NN" number. Vol numbering is deprecated.
 - The card news brand title is **"Trend News"** (English wordmark on the cover).
 - All visible content (HTML + Canva) must be in Korean (English wordmark "Trend News" and source/outlet names excepted).
@@ -32,12 +30,11 @@ The card news is built **natively in Canva** (ROLE_6) — there is **NO HTML→P
 
 ## TRIGGER
 
-**Input:** Telegram message containing "트렌드 레터 만들어줘"
+**Input:** User message containing "트렌드 레터 만들어줘"
 
 **On trigger — do exactly this:**
-1. Send Telegram reply: `"트렌드 레터 제작 시작할게요! 완료되면 HTML·캔바 링크·게시물 글로 보내드릴게요 🙌"`
-2. Execute roles in strict order: ROLE_1 → ROLE_2 → ROLE_3 → ROLE_4 → ROLE_5 → ROLE_6
-3. On any unrecoverable failure: send one Telegram reply naming the failed role and the error
+1. Execute roles in strict order: ROLE_1 → ROLE_2 → ROLE_3 → ROLE_4 → ROLE_5 → ROLE_6
+2. On any unrecoverable failure: report the failed role and the error in chat
 
 ---
 
@@ -67,5 +64,4 @@ The card news is built **natively in Canva** (ROLE_6) — there is **NO HTML→P
 ❌ NO images from fewer than 3 distinct domains  
 ❌ NO placeholder `<div>` substituting for images — real `<img>` tags only  
 ❌ NO English visible text in rendered newsletter (CSS class names excepted)  
-❌ NO mid-task Telegram messages asking for approval or confirmation  
 ❌ NO topics duplicating stories already in `references/`
